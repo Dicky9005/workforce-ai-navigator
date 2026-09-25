@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Workforce AI Navigator — Executive Prototype</title>
+<style>
+:root{--bg:#f5f7fb;--panel:#fff;--ink:#172033;--muted:#667085;--line:#e5e7eb;--navy:#102a43;--blue:#2563eb;--green:#078a68;--amber:#c27a00;--red:#c53b3b;--purple:#7657d9;--shadow:0 10px 30px #102a4312}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);font:14px Inter,Segoe UI,Arial,sans-serif;color:var(--ink)}
+button,select,input{font:inherit} button{cursor:pointer;border:0}
+.app{display:flex;min-height:100vh}.side{width:244px;background:#0f2238;color:#dce8f5;padding:20px 14px;position:fixed;inset:0 auto 0 0}
+.logo{font-weight:800;font-size:18px;padding:4px 10px 22px;color:#fff}.logo span{color:#61a5ff}.nav{display:grid;gap:6px}.nav button{background:transparent;color:#b9c8d8;text-align:left;padding:11px 12px;border-radius:8px}.nav button.active,.nav button:hover{background:#1b3a5b;color:#fff}.side .tag{margin:28px 10px 8px;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#7890a8}
+.main{margin-left:244px;width:calc(100% - 244px);padding:26px 34px 50px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.crumb{color:var(--muted);font-size:12px}.user{display:flex;gap:10px;align-items:center}.avatar{width:34px;height:34px;border-radius:50%;background:#dbeafe;color:#1d4ed8;display:grid;place-items:center;font-weight:800}
+h1{font-size:27px;margin:3px 0 5px}.sub{color:var(--muted);margin:0 0 24px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:17px;box-shadow:var(--shadow)}.metric .label{font-size:12px;color:var(--muted)}.metric .num{font-size:29px;font-weight:800;margin:8px 0}.metric .delta{font-size:12px}.green{color:var(--green)}.amber{color:var(--amber)}.red{color:var(--red)}.blue{color:var(--blue)}
+.section{margin-top:18px}.section h2{font-size:16px;margin:0 0 11px}.two{display:grid;grid-template-columns:1.35fr .65fr;gap:14px}.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.barrow{display:grid;grid-template-columns:170px 1fr 52px;gap:10px;align-items:center;margin:12px 0;font-size:12px}.bar{height:9px;background:#edf1f6;border-radius:10px;overflow:hidden}.fill{height:100%;border-radius:10px}.fill.blue{background:#3b82f6}.fill.amber{background:#f59e0b}.fill.red{background:#dc5b5b}.fill.green{background:#10a37f}.fill.purple{background:#8065d8}
+table{width:100%;border-collapse:collapse}th,td{padding:11px 9px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}th{color:var(--muted);font-weight:600}.pill{display:inline-block;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;background:#eef2ff;color:#4338ca}.pill.green{background:#e7f7f2}.pill.amber{background:#fff5dc}.pill.red{background:#fdeaea}.pill.gray{background:#f0f2f5;color:#667085}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{padding:9px 13px;border-radius:8px;background:#eef2f7;color:#23364d;font-weight:700}.btn.primary{background:var(--blue);color:white}.btn.dark{background:#163653;color:#fff}.btn.ghost{background:white;border:1px solid var(--line)}
+.notice{padding:13px 14px;border-left:4px solid var(--blue);background:#f0f6ff;border-radius:8px;color:#24405f}.aha{background:linear-gradient(135deg,#102a43,#1d4770);color:white;border-radius:14px;padding:22px}.aha .big{font-size:34px;font-weight:900;margin:8px 0}.aha p{color:#d9e8f7}.stepper{display:flex;gap:6px;margin:15px 0 22px}.step{flex:1;padding:10px;background:#e9edf3;color:#667085;text-align:center;border-radius:8px;font-size:11px;font-weight:700}.step.on{background:#dbeafe;color:#1d4ed8}.step.done{background:#dff6ef;color:#08775b}
+.page{display:none}.page.active{display:block}.source{font-size:11px;color:var(--muted);cursor:pointer;text-decoration:underline}.drawer{position:fixed;right:-460px;top:0;width:430px;height:100vh;background:#fff;box-shadow:-15px 0 40px #0002;padding:24px;transition:.25s;z-index:10;overflow:auto}.drawer.open{right:0}.close{float:right;background:#f1f3f6;border-radius:50%;width:30px;height:30px}.evidence{border:1px solid var(--line);border-radius:10px;padding:12px;margin:10px 0}.confidence{height:7px;background:#e9edf2;border-radius:10px;overflow:hidden}.confidence i{display:block;height:100%;background:#10a37f}.modal{position:fixed;inset:0;background:#102a4355;display:none;place-items:center;z-index:20}.modal.show{display:grid}.modalbox{background:white;border-radius:14px;width:min(720px,92vw);padding:25px;box-shadow:0 25px 70px #0003}.choice{border:1px solid var(--line);padding:14px;border-radius:10px;margin:8px 0}.choice:hover{border-color:#8bb8ff;background:#f7fbff}
+@media(max-width:900px){.side{width:70px}.logo{font-size:0}.logo span{font-size:18px}.nav button{font-size:0}.nav button:before{content:"•";font-size:20px}.main{margin-left:70px;width:calc(100% - 70px)}.grid,.two,.three{grid-template-columns:1fr 1fr}} 
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="logo">WORKFORCE <span>AI</span></div>
+  <div class="nav">
+    <button class="active" data-page="exec">Executive cockpit</button>
+    <button data-page="exposure">AI exposure</button>
+    <button data-page="capability">Capability map</button>
+    <button data-page="mobility">Redeployment</button>
+    <button data-page="economics">Economics</button>
+  </div>
+  <div class="tag">Prototype</div>
+  <div style="padding:0 10px;font-size:11px;color:#91a5bb;line-height:1.6">Decision support, not an automated employment decision.</div>
+</aside>
+<main class="main">
+<div class="top"><div><div class="crumb">AI Workforce Transformation / Executive prototype</div></div><div class="user"><span>Board sponsor</span><div class="avatar">DR</div></div></div>
+
+<section id="exec" class="page active">
+<h1>Workforce AI Navigator</h1><p class="sub">Dari 52.000 orang → pekerjaan yang berubah → capability → jalur perpindahan.</p>
+<div class="grid">
+<div class="card metric"><div class="label">Total workforce</div><div class="num">52,000</div><div class="delta">6 regional units</div></div>
+<div class="card metric"><div class="label">Role capacity potentially affected</div><div class="num">4,200</div><div class="delta amber">Working estimate · medium confidence</div></div>
+<div class="card metric"><div class="label">Metering workforce</div><div class="num">6,000</div><div class="delta blue">Pilot population</div></div>
+<div class="card metric"><div class="label">AI investment</div><div class="num">Rp3.5B</div><div class="delta green">Planning assumption</div></div>
+</div>
+<div class="section two">
+<div class="card">
+<h2>Board decision path</h2>
+<div class="stepper"><div class="step done">1 · KNOW</div><div class="step done">2 · MOVE</div><div class="step on">3 · DECIDE</div></div>
+<div class="notice"><b>Current insight:</b> automation changes tasks, not automatically people. 4,200 is role-capacity exposure, not a termination list.</div>
+<div class="section">
+<div class="barrow"><span>Work remains / evolves</span><div class="bar"><div class="fill green" style="width:52%"></div></div><b>52%</b></div>
+<div class="barrow"><span>Reskill pathway</span><div class="bar"><div class="fill blue" style="width:27%"></div></div><b>27%</b></div>
+<div class="barrow"><span>Redeploy / adjacent</span><div class="bar"><div class="fill purple" style="width:14%"></div></div><b>14%</b></div>
+<div class="barrow"><span>Residual review</span><div class="bar"><div class="fill amber" style="width:7%"></div></div><b>7%</b></div>
+</div>
+</div>
+<div class="card">
+<h2>What changed today?</h2>
+<p style="font-size:13px;line-height:1.6">A previously opaque workforce problem is now represented as <b>traceable work transitions</b>.</p>
+<button class="btn primary" onclick="showPage('exposure')">Explore the exposure map →</button>
+</div>
+</div>
+<div class="section aha">
+<div style="font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#9fc9ff">AHA MOMENT · Metering</div>
+<div class="big">6,000 → not 6,000 exits.</div>
+<p>The manual reading task is shrinking, while device diagnostics, exception management and field data quality work are emerging. The system turns that shift into individual transition pathways.</p>
+<div class="actions"><button class="btn" onclick="showPage('mobility')">See 4,200 transition pathways</button><button class="btn" onclick="openEvidence('Aha')">Why should I trust this?</button></div>
+</div>
+</section>
+
+<section id="exposure" class="page">
+<h1>AI Exposure Map</h1><p class="sub">Task-level view prevents “AI exposure = people redundancy” mistakes.</p>
+<div class="card">
+<div class="actions" style="margin-bottom:12px"><button class="btn primary" onclick="filterExposure('all')">All</button><button class="btn" onclick="filterExposure('meter')">Metering</button><button class="btn" onclick="filterExposure('field')">Field operations</button></div>
+<table><thead><tr><th>Work / task</th><th>Population</th><th>AI exposure</th><th>Future signal</th><th>Confidence</th></tr></thead>
+<tbody id="exposureRows">
+<tr data-type="meter"><td><b>Manual meter reading</b><br><span class="source" onclick="openEvidence('Manual meter reading')">View evidence</span></td><td>6,000</td><td><span class="pill red">High</span></td><td>Automate / exception work</td><td>82%</td></tr>
+<tr data-type="meter"><td><b>Meter exception investigation</b><br><span class="source" onclick="openEvidence('Exception investigation')">View evidence</span></td><td>1,420</td><td><span class="pill amber">Medium</span></td><td>Grow</td><td>71%</td></tr>
+<tr data-type="field"><td><b>Field device diagnostics</b><br><span class="source" onclick="openEvidence('Device diagnostics')">View evidence</span></td><td>980</td><td><span class="pill green">Low</span></td><td>Grow</td><td>76%</td></tr>
+<tr data-type="field"><td><b>Routine manual data entry</b><br><span class="source" onclick="openEvidence('Data entry')">View evidence</span></td><td>2,300</td><td><span class="pill red">High</span></td><td>Automate</td><td>89%</td></tr>
+<tr data-type="field"><td><b>Customer field interaction</b><br><span class="source" onclick="openEvidence('Customer interaction')">View evidence</span></td><td>4,600</td><td><span class="pill green">Low</span></td><td>Augment</td><td>74%</td></tr>
+</tbody></table>
+</div>
+<div class="section three">
+<div class="card"><h2>Exposure</h2><div style="font-size:30px;font-weight:800">4,200</div><p class="sub">role capacity requiring transition analysis</p></div>
+<div class="card"><h2>Unknown ≠ low</h2><p class="sub">45% skill records are empty. The model does not convert missing evidence into a low score.</p></div>
+<div class="card"><h2>Decision rule</h2><p class="sub">Low-confidence signals trigger assessment, not an employment decision.</p></div>
+</div>
+</section>
+
+<section id="capability" class="page">
+<h1>Capability Map</h1><p class="sub">Profiles combine grade, work domain and evidence-backed capability portfolio.</p>
+<div class="two">
+<div class="card">
+<h2>Metering → Smart Meter Technician</h2>
+<table><thead><tr><th>Capability</th><th>Current</th><th>Required</th><th>Evidence</th></tr></thead>
+<tbody>
+<tr><td>Meter operations</td><td>P4</td><td>P4</td><td>Work history</td></tr>
+<tr><td>Field safety</td><td>P4</td><td>P4</td><td>Certification</td></tr>
+<tr><td>Digital device operation</td><td>P1</td><td>P3</td><td>Assessment needed</td></tr>
+<tr><td>Diagnostics</td><td>P2</td><td>P3</td><td>Supervisor evidence</td></tr>
+<tr><td>Exception management</td><td>P2</td><td>P3</td><td>Recent work sample</td></tr>
+</tbody></table>
+</div>
+<div class="card"><h2>Capability confidence</h2>
+<div class="barrow"><span>High evidence</span><div class="bar"><div class="fill green" style="width:68%"></div></div><b>68%</b></div>
+<div class="barrow"><span>Medium</span><div class="bar"><div class="fill blue" style="width:21%"></div></div><b>21%</b></div>
+<div class="barrow"><span>Low / unknown</span><div class="bar"><div class="fill amber" style="width:11%"></div></div><b>11%</b></div>
+<button class="btn ghost" onclick="openEvidence('Capability')">Inspect evidence hierarchy</button></div>
+</div>
+</section>
+
+<section id="mobility" class="page">
+<h1>Redeployment Navigator</h1><p class="sub">A destination-first workflow: future work → capability gap → pathway → placement.</p>
+<div class="card">
+<table><thead><tr><th>Current role</th><th>Future destination</th><th>Gap</th><th>Pathway</th><th>Confidence</th><th></th></tr></thead>
+<tbody>
+<tr><td>Meter Reader L3</td><td><b>Smart Meter Technician L3</b></td><td>Digital device P1→P3</td><td>12-week reskill</td><td><span class="pill green">High</span></td><td><button class="btn" onclick="openProfile('MTR-01842')">Open</button></td></tr>
+<tr><td>Meter Reader L3</td><td><b>Meter Data Validation L3</b></td><td>Data quality P2→P3</td><td>8-week reskill</td><td><span class="pill amber">Medium</span></td><td><button class="btn" onclick="openProfile('MTR-02117')">Open</button></td></tr>
+<tr><td>Field Meter Supervisor L4</td><td><b>Energy Loss Investigator L4</b></td><td>Analytics P2→P3</td><td>10-week reskill</td><td><span class="pill green">High</span></td><td><button class="btn" onclick="openProfile('SUP-00482')">Open</button></td></tr>
+<tr><td>Meter Reader L3</td><td><b>Customer Energy Service L3</b></td><td>Digital service P1→P2</td><td>6-week upskill</td><td><span class="pill amber">Medium</span></td><td><button class="btn" onclick="openProfile('MTR-03104')">Open</button></td></tr>
+</tbody></table>
+</div>
+<div class="section aha"><div style="font-size:12px;color:#9fc9ff">EXECUTIVE ACTION</div><h2>Approve the pilot, not a termination list.</h2><p>The next step is to validate the highest-confidence pathways with operations, employees and worker representatives before scaling.</p><button class="btn" onclick="approvePilot()">Approve 6,000-person metering pilot</button></div>
+</section>
+
+<section id="economics" class="page">
+<h1>Economics & Decision</h1><p class="sub">Illustrative planning model — replace assumptions with Finance-validated aggregates.</p>
+<div class="grid">
+<div class="card metric"><div class="label">Workforce capacity at stake</div><div class="num">Rp504B</div><div class="delta">4,200 × Rp120M annual loaded cost*</div></div>
+<div class="card metric"><div class="label">Transformation investment</div><div class="num">Rp19.5B</div><div class="delta">Illustrative, includes reskill/change</div></div>
+<div class="card metric"><div class="label">Annual inaction exposure</div><div class="num">Rp50–151B</div><div class="delta amber">10–30% leakage scenario</div></div>
+<div class="card metric"><div class="label">AI investment</div><div class="num">Rp3.5B</div><div class="delta">Planning assumption</div></div>
+</div>
+<div class="section two">
+<div class="card"><h2>Economic bridge</h2>
+<div class="barrow"><span>Capacity at stake</span><div class="bar"><div class="fill red" style="width:100%"></div></div><b>504B</b></div>
+<div class="barrow"><span>Inaction @ 20%</span><div class="bar"><div class="fill amber" style="width:60%"></div></div><b>101B</b></div>
+<div class="barrow"><span>Transformation</span><div class="bar"><div class="fill blue" style="width:12%"></div></div><b>19.5B</b></div>
+<p class="source" onclick="openEvidence('Economics')">See assumptions and calculation</p></div>
+<div class="card"><h2>What the Board can approve</h2><div class="choice"><b>1 · Validate economics</b><br>Finance confirms aggregate loaded-cost bands.</div><div class="choice"><b>2 · Validate pathways</b><br>Operations + workforce representatives test future roles.</div><div class="choice"><b>3 · Scale only on evidence</b><br>Gate 90 days on demonstrated outcomes.</div></div>
+</div>
+</section>
+</main>
+</div>
+
+<div class="drawer" id="drawer"><button class="close" onclick="closeDrawer()">×</button><h2 id="dtitle">Evidence</h2><div id="dcontent"></div></div>
+<div class="modal" id="modal"><div class="modalbox"><h2 id="mtitle"></h2><p id="mtext"></p><div class="actions"><button class="btn primary" onclick="closeModal()">Continue</button></div></div></div>
+
+<script>
+const pages=document.querySelectorAll('.page'), nav=document.querySelectorAll('.nav button');
+function showPage(id){pages.forEach(p=>p.classList.toggle('active',p.id===id));nav.forEach(n=>n.classList.toggle('active',n.dataset.page===id));window.scrollTo(0,0)}
+nav.forEach(n=>n.onclick=()=>showPage(n.dataset.page));
+function filterExposure(type){document.querySelectorAll('#exposureRows tr').forEach(r=>r.style.display=(type==='all'||r.dataset.type===type)?'':'none')}
+const evidence={
+'Aha':["Why this is credible","The 6,000 figure is a case-study input. The transition categories are prototype scenarios. The interface deliberately separates measured inputs, inferred signals and planning assumptions. Confidence is shown so executives can challenge the evidence before approving scale."],
+'Manual meter reading':["Evidence: manual meter reading","Measured input: 6,000 field meter workers in the case. Inference: routine reading tasks have high automation exposure. Confidence 82% is illustrative prototype data and must be recalibrated against procurement scope, device coverage and process observations."],
+'Exception investigation':["Evidence: exception investigation","Inference based on task decomposition: automated meters reduce routine capture but increase exception handling. Confidence 71% is illustrative. Validate using historical exception volume and future device architecture."],
+'Device diagnostics':["Evidence: device diagnostics","Future-work hypothesis based on smart-meter operating model. Confidence 76% is illustrative and should be validated through actual equipment specifications and operations design."],
+'Data entry':["Evidence: data entry","High exposure is an inference from repetitive digital capture tasks. Confidence 89% is illustrative; validate against actual process automation coverage."],
+'Customer interaction':["Evidence: customer interaction","Field/customer interaction is expected to remain human-led but AI-augmented. Confidence 74% is illustrative; validate with service design."],
+'Capability':["Capability evidence hierarchy","Highest confidence: practical work sample / certification. Medium: recent supervisor evidence and validated work history. Lower: self-declaration or stale records. Missing skill data is treated as UNKNOWN, never as LOW."],
+'Economics':["Economic model assumptions","Illustrative assumptions: loaded cost Rp10M/FTE/month; 4,200 affected role capacity; Rp5M average reskill intervention; Rp1.5B stakeholder/change; Rp2B assessment/certification; Rp3.5B AI investment. These are not payroll facts. Finance should replace them with aggregated, policy-compliant bands."]
+};
+function openEvidence(k){let e=evidence[k]||["Evidence","No evidence card configured."];document.getElementById('dtitle').textContent=e[0];document.getElementById('dcontent').innerHTML='<p style="line-height:1.7">'+e[1]+'</p><div class="evidence"><b>Confidence discipline</b><p>High-confidence evidence may support workforce planning. Medium supports prioritization. Low/unknown triggers assessment. It does not independently support an employment decision.</p><div class="confidence"><i style="width:76%"></i></div></div>';document.getElementById('drawer').classList.add('open')}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open')}
+function openProfile(id){document.getElementById('mtitle').textContent='Transition profile · '+id;document.getElementById('mtext').innerHTML='<b>Current:</b> Meter Reader L3<br><b>Destination:</b> Smart Meter Technician L3<br><b>Capability gap:</b> Digital device operation P1 → P3<br><b>Pathway:</b> 12-week blended learning + practical assessment<br><b>Decision confidence:</b> High for role match; individual capability still requires validation.';document.getElementById('modal').classList.add('show')}
+function approvePilot(){document.getElementById('mtitle').textContent='Pilot decision recorded';document.getElementById('mtext').textContent='Prototype action: approve the 6,000-person metering pilot for validation. No individual employment decision is made by this prototype.';document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+</script>
+</body>
+</html>
